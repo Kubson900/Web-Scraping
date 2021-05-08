@@ -7,12 +7,17 @@ from database_operations import Database
 class Product:
     def __init__(self, name):
         self.name = name
+        self.info = None
 
     def set_name(self):
         self.name = input("Product name: ")
 
     def set_name(self, name):
         self.name = name
+
+    def set_product_list(self):
+        pass
+        # TODO
 
     def get_url(self):
         words = self.name.split()

@@ -1,7 +1,7 @@
 import sqlite3
 from sqlite3 import Error
 import os
-
+from pathlib import Path
 
 
 class Database:
@@ -13,34 +13,42 @@ class Database:
         self.cursor = self.connection.cursor()
         self.view_name = 'view_' + self.product_name
 
-    def run(self):
+    def run(self, product):
         if self.connection is not None:
             self.create_table()
             self.insert_values()
             self.create_view()
             self.commit_changes()
 
+            distinct_records = self.get_distinct_records()
             cheapest_offer = self.get_cheapest_offer()
             most_expensive_offer = self.get_most_expensive_offer()
             most_common_price = self.get_most_common_price()
+            basic_price_info_by_city = self.get_price_info_by_city()
 
-            while True:
+            product.info = (distinct_records, cheapest_offer, most_expensive_offer, most_common_price, basic_price_info_by_city)
+
+            delete_decision = 2
+            while delete_decision not in [0, 1]:
                 try:
-                    delete_decision = int(input('[0] delete database\n[1] delete data connected with this product\n[2] finish'))
-                    break
-                    # TODO
-                except:
-                    print('Invalid input')
+                    delete_decision = int(input('Would you like to delete database?\n[0] No\n[1] Yes\nChoice: '))
+                    if delete_decision == 1:
+                        self.delete_view()
+                        self.delete_table()
+                        self.commit_changes_and_close()
+                        self.delete_database()
+                    elif delete_decision == 0:
+                        self.commit_changes_and_close()
+                except Error as error:
+                    print(error)
 
-            self.delete_view()
-            self.delete_table()
-            self.delete_database()
 
-            self.commit_changes_and_close()
 
     def establish_connection(self):
         try:
-            return sqlite3.connect(f'{self.product_name}.db')
+            path = Path(f'{self.product_name}/')
+            path.mkdir()
+            return sqlite3.connect(f'{self.product_name}/{self.product_name}.db')
         except Error as error:
             print(error)
             return None
@@ -76,16 +84,16 @@ class Database:
         except Error as error:
             print(error)
 
-    def get_price_info(self):
+    def get_price_info_by_city(self):
         try:
-            self.cursor.execute(f'select count(price), avg(price), min(price), max(price), city from {self.view_name} group by city order by max(price) desc;')
+            self.cursor.execute(f'select city, count(price), avg(price), min(price), max(price) from {self.view_name} group by city order by max(price) desc;')
             return self.cursor.fetchall()
         except Error as error:
             print(error)
 
     def get_cheapest_offer(self):
         try:
-            self.cursor.execute(f'select * from {self.view_name} order by  price asc limit 1;')
+            self.cursor.execute(f'select * from {self.view_name} order by price asc limit 1;')
             return self.cursor.fetchall()
         except Error as error:
             print(error)
@@ -118,15 +126,12 @@ class Database:
 
     def delete_database(self):
         try:
-            self.delete_view()
-            self.delete_table()
-        except Error as error:
-            print(error)
-        finally:
             if os.path.exists(f'{self.product_name}.db'):
-                os.remove(f'{self.product_name}.db')
+                os.remove(f'{self.product_name}/{self.product_name}.db')
             else:
                 print("The file does not exist")
+        except Error as error:
+            print(error)
 
     def commit_changes(self):
         self.connection.commit()
