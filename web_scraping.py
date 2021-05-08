@@ -41,7 +41,7 @@ class Page:
         return bs4.BeautifulSoup(req.text, "lxml")
 
     def parse_price(self, price):
-        return float(price.replace(' ', '').replace('zł', ''))
+        return float(price.replace(' ', '').replace('zł', '').replace(',', '.'))
 
     def get_products_data(self):
         for page_number in range(self.number_of_pages+1):
@@ -57,5 +57,5 @@ class Page:
 
                     if price.lower() not in ('za darmo', 'zamienię'):
                         self.products.append((title, self.parse_price(price), location, link))
-                except:
-                    print('Error occurred')
+                except Exception as e:
+                    print(e)

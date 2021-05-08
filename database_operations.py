@@ -32,6 +32,9 @@ class Database:
             while delete_decision not in [0, 1]:
                 try:
                     delete_decision = int(input('Would you like to delete database?\n[0] No\n[1] Yes\nChoice: '))
+                except Exception as error:
+                    print(error)
+                try:
                     if delete_decision == 1:
                         self.delete_view()
                         self.delete_table()
@@ -41,6 +44,7 @@ class Database:
                         self.commit_changes_and_close()
                 except Error as error:
                     print(error)
+
 
 
 
@@ -86,7 +90,7 @@ class Database:
 
     def get_price_info_by_city(self):
         try:
-            self.cursor.execute(f'select city, count(price), avg(price), min(price), max(price) from {self.view_name} group by city order by max(price) desc;')
+            self.cursor.execute(f'select city, count(price), avg(price), min(price), max(price) from {self.view_name} group by city order by count(price) desc;')
             return self.cursor.fetchall()
         except Error as error:
             print(error)
@@ -126,7 +130,7 @@ class Database:
 
     def delete_database(self):
         try:
-            if os.path.exists(f'{self.product_name}.db'):
+            if os.path.exists(f'{self.product_name}/{self.product_name}.db'):
                 os.remove(f'{self.product_name}/{self.product_name}.db')
             else:
                 print("The file does not exist")
