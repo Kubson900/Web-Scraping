@@ -4,6 +4,7 @@ import lxml
 
 from database_operations import Database
 
+
 class Product:
     def __init__(self, name):
         self.name = name
@@ -44,18 +45,20 @@ class Page:
         return float(price.replace(' ', '').replace('zł', '').replace(',', '.'))
 
     def get_products_data(self):
+        none_type_counter = 0
         for page_number in range(self.number_of_pages+1):
             page = self.get_analyzed_page(page_number)
             products = page.select('.offer-wrapper')
             for product in products:
                 try:
                     title = product.find('strong').get_text().strip()
-                    price = product.find('p', class_='price').get_text().strip() # za darmo, zamienię .lower()
+                    price = product.find('p', class_='price').get_text().strip()
                     footer = product.find('td', class_='bottom-cell')
                     location = footer.find('small', class_='breadcrumb').get_text().strip().split(',')[0]
                     link = product.find('a')['href']
 
                     if price.lower() not in ('za darmo', 'zamienię'):
                         self.products.append((title, self.parse_price(price), location, link))
-                except Exception as e:
-                    print(e)
+                except:
+                    none_type_counter += 1
+        print(f'Number of products lacking in at least one argument: {none_type_counter}\n')

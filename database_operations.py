@@ -45,14 +45,11 @@ class Database:
                 except Error as error:
                     print(error)
 
-
-
-
     def establish_connection(self):
         try:
-            path = Path(f'{self.product_name}/')
-            path.mkdir()
-            return sqlite3.connect(f'{self.product_name}/{self.product_name}.db')
+            path = Path(f'Products/{self.product_name}/')
+            path.mkdir(parents=True, exist_ok=True)
+            return sqlite3.connect(f'Products/{self.product_name}/{self.product_name}.db')
         except Error as error:
             print(error)
             return None
@@ -130,8 +127,8 @@ class Database:
 
     def delete_database(self):
         try:
-            if os.path.exists(f'{self.product_name}/{self.product_name}.db'):
-                os.remove(f'{self.product_name}/{self.product_name}.db')
+            if os.path.exists(f'Products/{self.product_name}/{self.product_name}.db'):
+                os.remove(f'Products/{self.product_name}/{self.product_name}.db')
             else:
                 print("The file does not exist")
         except Error as error:

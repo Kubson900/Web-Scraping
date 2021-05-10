@@ -1,10 +1,12 @@
 from web_scraping import Product, Page
 from database_operations import Database
 from csv_handler import CsvHandler
-
+from pathlib import Path
 
 
 def run():
+    path = Path('Products/')
+    path.mkdir(parents=True, exist_ok=True)
     while True:
         product_name = input('Product name: ')
         product = Product(product_name)
@@ -16,11 +18,12 @@ def run():
         csv_handler.create_csv_distinct_records()
         csv_handler.create_csv_basic_price_info_by_city()
 
-        new_product = input("Would you like to search for another product? Enter 'y': ")
+        new_product = input("Would you like to search for another product? Enter 'y' to run or any input to exit: ")
         if new_product.lower() == 'y':
             continue
         else:
             break
+
 
 if __name__ == "__main__":
     run()
