@@ -1,13 +1,17 @@
 # Web-Scraping
 Have you ever wondered how much money could you possibly get for your product on a popular site: https://www.olx.pl/ ? No more tedious web scrolling! This program with a blink of an eye does everything for you. It analyzes the HTML code of every page of the product you are looking for and generates CSV files along with a simple graph and database for future application.
+
 # Disclaimer
 Project for educational purposes only! It involves continuous and repeated page requesting from a site that is not very keen on scraping.
+
 # Skills involved
 * **Object Oriented Programming**
-* **Using external libraries**
-* **HTML understanding**
-* **Working with CSV files**
 * **Working with database SQLite**
+* **HTML understanding**
+* **Web Scraping**
+* **Working with CSV files**
+* **Using external libraries**
+
 # Example output
 <p align="center">
   <img src="https://raw.githubusercontent.com/Kubson900/Web-Scraping/main/Products/SamsungGalaxyS10Plus128GB/SamsungGalaxyS10Plus128GB_prices_histogram.png">
