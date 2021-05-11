@@ -8,7 +8,10 @@ from database_operations import Database
 class Product:
     def __init__(self, name):
         self.name = name
-        self.info = None
+        self.info = []
+        self.prices = []
+        self.cities = []
+
 
     def set_name(self):
         self.name = input("Product name: ")
@@ -23,6 +26,15 @@ class Product:
     def get_url(self):
         words = self.name.split()
         return 'https://www.olx.pl/oferty/q-' + '-'.join(words) + '/?page={}'
+
+    def set_prices_and_cities(self):
+        distinct_records = self.info[0]
+        city_info = self.info[4]
+        for product in distinct_records:
+            title, price, city, link = product
+            self.prices.append(price)
+            self.cities.append((city))
+
 
 
 class Page:

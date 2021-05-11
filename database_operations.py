@@ -26,7 +26,8 @@ class Database:
             most_common_price = self.get_most_common_price()
             basic_price_info_by_city = self.get_price_info_by_city()
 
-            product.info = (distinct_records, cheapest_offer, most_expensive_offer, most_common_price, basic_price_info_by_city)
+            product.info = [distinct_records, cheapest_offer, most_expensive_offer, most_common_price, basic_price_info_by_city]
+            product.set_prices_and_cities()
 
             delete_decision = 2
             while delete_decision not in [0, 1]:
