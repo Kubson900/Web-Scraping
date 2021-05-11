@@ -10,7 +10,7 @@ Project for educational purposes only! It involves continuous and repeated page 
 * **Working with database SQLite**
 # Example output
 <p align="center">
-  <img src="Products/SamsungGalaxyS10Plus128GB/SamsungGalaxyS10Plus128GB_prices_histogram.png>
+  <img src="https://raw.githubusercontent.com/Kubson900/Web-Scraping/main/Products/SamsungGalaxyS10Plus128GB/SamsungGalaxyS10Plus128GB_prices_histogram.png">
 </p>
             
 # Required:
